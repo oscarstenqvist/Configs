@@ -1,0 +1,80 @@
+5/9 Last of multiprocess
+Ctrl-c exits program.
+If you want to kill process called tcpdump: terminal sudo killall tcpdump
+or sudo kill -9 "process-id"
+You can also do it through programming.
+
+5/9 Multithreading
+What are threads? All programming goes sequentially. A thread is a sequentially flow from top to bottom of program.
+Why use multithreading instead of multiprocessing?
+All processes have PCB, all information about adress space and such.
+Creating a new process is costly
+Communicationg between processes is costly, becasue most communication goes through the OS
+
+Threads:
+Cooperating processes (communicating with eachother). How about we seperate the idea of process (address space etc.) from that of the minimal "thread of control" (PC, SP, registers) -> Threads. Threads dont have own code, data or files. They share it.
+
+Each prceoss may have multiple threas of control withih it. The address space of a process is shared among all its threads.
+No system calls are required to cooperate among threads.
+Simpler than message passing and shared-memory.
+
+Benefits: More responsive, resource sharing, economy, scalability
+
+Each thread has a program counter and a stack pointer.
+
+Kernel threads (lightweight process):
+Managed by the OS
+Switching between kernel threads of the same process is FAST.
+Only the values of reister, program counter and stack pointer must be changed.
+Memory management information does not need to be changed.
+
+User level threads:
+OS does not know about it.
+OS only knows about the process containing the threads.
+The programmer uses a thread library to manage threads (create and delete them, synchronize them, and schedule them.)
+
+Advantages of user level threads:
+No context switch involved when switching threads.
+More flexible, a user level code can define a probem dependent thread scheduling policy. Eac hprosess might use a different scheduling alorithm for its own threads.
+User level threads do not require system calls to create them or contet switches to move betwen them.
+User level threads are typically much faster than kernel threads!
+
+Disadvantages of user level threads:
+No true parallelism, multiple threads in process cannot run concurrently.
+Since the OS does not know about the existence of teh user-level threads, it may make poor scheduling decisions, it might run a process that only has idle threads. If a user-level thread is waiting for I/O, the entire process will wait.
+For kernel threads, the more threas a process creates, the more time slices the OS will dedicate to it. So user level threads does not get more time slices.
+
+Different mulththreading models: Many-to-one, one-to-one, many-to-many, two-level. Nowadays one-to-one kernel-to-user thread is most common.
+
+Disadvantages of user level threads does not matter nowadays as one-to-one multhithreading is most common.
+
+Thread library provides programmer with API for creating and managing threads.
+One library is Pthreads, POSIX standard. May be provied either as user-level or kernel-level.
+
+Phread creation:
+Main program compires a single default thread
+int pthread_create(....)
+
+Process synchronization:
+Concurrent access to shared data (race condition) may result in data inconsistency.
+Need to ensure orderly execution of cooperating processes, threads! Mutually exclusive
+Race condition example canvas.
+
+Lock thread to one specific peice of data! One thread at a time can work on the shared data.
+
+Synchronization solution:
+Reason for the problem: critical section
+In the case of a race conditin, N processes comoete for the access to shared data.
+The code fratments accessing these critical data are called critical sections.
+Solution to the problem: mutual exclusion.
+
+Mutual exclusion has three conditions:
+1. no two processes sumultaneously inside their critical regions
+2. A process outside of a critical region cannot be blocked indefinitely (deadlock)
+3. Bounded waiting time to enter a critical region, i.e. no starvation.
+
+Too many breads: Solution 1 does not work violates condition 1.
+Solution 2 does not work violates condition 2
+Solution 3 works! locking through while loop, not good solution because it will look different depending on how many threads. This solution relies on loads and stores being atomic.
+
+Solutions for synchronisation

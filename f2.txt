@@ -1,0 +1,85 @@
+fork(); forks a new child process that is  a copy of the parent
+execlp(); replaces the program of the cirrent process with the named program
+sleep(); suspends execution for at least the specified time
+exit(); process terminates itself
+kill(); process can terminate a child
+
+pid = wait(&status);
+when a child is finished, all resources will be reallocated. OS has a table for all process. If parent doesn't  gets a return from wait(), OS doesnt update table and there is now a zombie process.
+
+If parent terminated without invoking wait, the child becomes an orphan ;(.
+In linux, all orphans becomes child of the root parent init.
+
+Processes are either independent or cooperating.
+Cooperating processes work with each other t oaccomplish a single task
+-Share information
+-Provide computational speedup by soliving tasks in paallel
+-Allow us to build system in a modular fashion, not monolithic
+
+How to share memory between processes:
+Shared memory:
+-Share a region of memory between tow processes
+-Read and write to the shared memory
+-Fast communication but synchronisation is difficult
+Message passing:
+-Exchange messages (send and recieve)
+-Typically involves data copies (to/from buffer)
+-Slower communication but synchronisation is easier (because system calls)
+
+Message passing:
+-Purpuse: Processes communicate and synchronize actions
+-message system - processes communicate with each other without resorting to shared variablees
+-Two operations: send(message); receieve(message);
+-The message size is either fixed or variable
+-Fixed message causes problems for programmer because all messages usually not same size
+
+Message passing may be either blocking or non-blocking:
+Blocking is considered synchronous:
+-Blocking send -- the sender is blocked until the message is recieved
+-Blocking receive -- the receiver is blocked until a message is available
+Non-blocking is considerd asynchronous:
+-Non-blocking send -- the sender sends the message and continue
+-Non-blocking receive -- the receiver receieves:
+--A valid message, or
+--Null message
+
+Communications in client-server systems (internet):
+-Sockets
+-Remote Procedure calls
+-Pipes
+
+Sockets:
+-Two-way communication pipe
+-Backbone of your internet services
+
+Unix domain sockets:
+-communication between processes on the same unix system
+-special file in the file system
+
+Client server:
+-client sending requests for information, processing
+-server waiting for user requests
+
+Socket communication modes:
+-connection-based TCP
+-connection-less UDP
+
+Remote procedure calls RPC
+-Abstracts procedure calls between processes on networked systems
+-Uses ports for service differentiation
+-Stubs, client-side proxy for the actual procedure on the server
+-The client-side stub locates the server and marshalls the parameteres
+-The server-side stub receives this message, unpacks the marshalled parameters, and performs the procedure on the server
+-Data representation handled via external data representation (XDL) to account for different architectures:
+--Big-endian and little-endian (starts with MSB or LSB)
+-Remote communication has more failure scenarios than local
+-Messages can be delivered exactly once rather than at most once
+-OS typically provides a rendezvous (or matchmaker) service to connect client and server
+
+Pipes:
+-Most basic form of IPC on all unix systems
+-Unix pipes allow only unidirectional communication
+-Communication between parent and child
+-Process must be in the same OS
+
+catch signal good for example of catching ctrl-c for lab1
