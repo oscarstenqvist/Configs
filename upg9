@@ -1,0 +1,9 @@
+	.data 
+var1: .word 19
+var2: .word 3
+
+	.text
+	lw $t1, var1
+	lw $t2, var2
+	add $t0, $t1, $t2
+	

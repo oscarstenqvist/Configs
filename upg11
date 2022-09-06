@@ -1,0 +1,21 @@
+	.data
+sum: .word
+prod: .word
+quot: .word
+rema: .word
+var1: .word 19
+var2: .word 3
+
+	.text
+	lw $t1, var1
+	lw $t2, var2
+	add $t0, $t1, $t2
+	sw $t0, sum
+	mult $t1, $t2
+	mflo $t0
+	sw $t0, prod
+	div $t1, $t2
+	mflo $t0
+	sw $t0, quot
+	mfhi $t0
+	sw $t0, rema

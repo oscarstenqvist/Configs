@@ -1,0 +1,10 @@
+	.data
+var1: .float 3.14
+var2: .float 7
+sum: .float 0
+
+	.text
+	lwc1 $f1, var1
+	lwc1 $f2, var2
+	add.s $f0, $f1, $f2
+	swc1 $f0, sum
