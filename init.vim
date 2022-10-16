@@ -24,7 +24,10 @@ Plug 'hrsh7th/vim-vsnip'
 call plug#end()
 
 set autoindent noexpandtab tabstop=4 shiftwidth=4
+set splitbelow
+set splitright
 set termguicolors
+"set guicursor=a:blinkwait1-blinkon500-blinkoff500
 "highlight Normal guifg=Cyan
 let g:ale_sign_column_always = 1
 nnoremap <d-b> <cmd>NvimTreeToggle<cr>
@@ -35,19 +38,22 @@ xnoremap <d-c> "+y
 tnoremap <c-w><c-w> <c-\><c-n><c-w><c-w>
 
 if exists("g:neovide")
-    " Put anything you want to happen only in Neovide here
 	let g:neovide_refresh_rate = 90
 	let g:neovide_cursor_animation_length=0.1
 	let g:neovide_cursor_vfx_mode = "wireframe"
 endif
-
 lua << EOF
 vim.opt.guifont = {"RobotoMono NF", ":h17" }
 vim.wo.number = true
 
-require('toggleterm').setup{size = 10, open_mapping=[[<d-j>]], shade_terminals = true, shading_factor = 1}
-require('lualine').setup{ options = { theme = 'onedark'}}
 require('monokai').setup { italics = false}
+
+local custom_molokai= require'lualine.themes.molokai'
+--custom_molokai.normal.c.bg = '#26292c'
+custom_molokai.normal.c.bg = '#fd971f'
+custom_molokai.normal.c.fg = '#000000'
+require('lualine').setup{ options = { theme = custom_molokai}}
+require('toggleterm').setup{size = 10, open_mapping=[[<d-j>]], shade_terminals = true, shading_factor = 1}
 require('nvim-tree').setup()
 require("nvim-autopairs").setup {}
 require('leap').add_default_mappings()
@@ -78,7 +84,6 @@ local cmp = require'cmp'
 
 cmp.setup({
 	snippet = {
-      -- REQUIRED - you must specify a snippet engine
       expand = function(args)
         vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
       end,
